@@ -66,6 +66,7 @@ Cria movimento que explica, orienta ou confirma, nunca só enfeita. Entregue o c
 | Contador | Anima até o valor final e respeita `prefers-reduced-motion` |
 | Carregamento | Esqueleto com pulso suave, não spinner infinito |
 | Troca de página | Opacidade e leve deslocamento, mantendo o foco gerenciado |
+| Título grande | Revelação por palavra ao rolar: do contraste reduzido ao pleno, ligada ao scroll (ver `design-scroll`) |
 
 ## Escolha da ferramenta
 
