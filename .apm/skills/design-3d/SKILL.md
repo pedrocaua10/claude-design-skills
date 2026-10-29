@@ -122,6 +122,25 @@ ScrollTrigger.create({
 ```
 - Mostre o primeiro quadro como imagem comum enquanto os demais carregam.
 - O peso cresce com a quantidade de quadros e a resolução. Meça o total e defina um orçamento.
+
+**Poses por faixa de quadros.** Uma única sequência serve a várias cenas: cada cena usa uma faixa (por exemplo, 0 a 45% em pé, 45 a 70% virando, 70 a 100% tombando). Some escala, rotação e deslocamento em keyframes ligados ao progresso da seção. Não há troca de modelo.
+```js
+const poses = [
+  { at: 0,   frame: 0,    scale: 1.5,  y: "20em" },
+  { at: 0.3, frame: 0.45, scale: 1.4,  y: "0" },
+  { at: 0.7, frame: 0.7,  scale: 1.54, y: "3em", rotate: -10 },
+  { at: 1,   frame: 0.99 }
+];
+// ScrollTrigger com scrub na seção alta: interpole entre poses vizinhas e
+// use gsap.utils.interpolate para escala, rotação e deslocamento.
+```
+Na saída, reduza a escala a 0 e a opacidade a 0 e deixe as próximas seções cobrirem a camada (`z-index` maior).
+
+**Via Lottie (canvas).** Exportar os quadros em um Lottie com WebP embutido funciona, mas o JSON vira um arquivo único e pesado.
+- Referência medida: 342 quadros a 1300×1350 px renderam 15,9 MB brutos e cerca de 11 MB em brotli. Carregar o arquivo antes de mostrar o objeto atrasa a primeira imagem.
+- Em portfólio, prefira de 60 a 120 quadros, 800 a 1000 px de lado e WebP ou AVIF em arquivos separados, com carga progressiva (quadro 0 primeiro, depois o resto em segundo plano).
+- Para o canvas 2D, o `drawImage` acima dispensa a biblioteca Lottie.
+- Teste em rede lenta e tenha um poster estático para `prefers-reduced-motion`.
 - A rotação fica fixa em um eixo. Para vários ângulos, use WebGL.
 - Use ativos próprios. Registre a origem e a licença de cada quadro.
 
