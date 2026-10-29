@@ -135,11 +135,11 @@ Divida o título em palavras e leve cada uma de um contraste reduzido ao pleno, 
 ```js
 const split = new SplitType(".reveal-text", { types: "words" });
 gsap.fromTo(split.words, { opacity: 0.35 }, {
-  opacity: 1, stagger: 0.05,
-  scrollTrigger: { trigger: ".reveal-text", start: "top 80%", end: "top 30%", scrub: true }
+  opacity: 1, ease: "power1.out", stagger: 0.1,
+  scrollTrigger: { trigger: ".reveal-text", start: "top 90%", end: "top 50%", scrub: true }
 });
 ```
-O texto já aparece legível, só mais fraco. Mantenha o `aria-label` no contêiner, porque a divisão em `span` pode atrapalhar leitores de tela.
+Faixa de referência: do topo do elemento a 90% da tela até a 50% (cerca de 40% da altura da tela, sem `pin`). Um trigger por título. Comece o contraste em 0,2 a 0,35, conforme o fundo. O texto já aparece legível, só mais fraco. Mantenha o `aria-label` no contêiner, porque a divisão em `span` pode atrapalhar leitores de tela.
 
 **Rolagem suave com Lenis integrada ao ScrollTrigger**
 ```js
@@ -156,15 +156,20 @@ Cada seção tem uma cor de fundo forte e própria (token por seção), e a troc
 
 ## Padrões de referência
 
-Observados em um site de produto com scroll narrativo, descritos só no nível da técnica:
-- Fundo texturizado com grão e ilustração botânica de baixo contraste.
+Observados em um site de produto com scroll narrativo (análise de rede e estrutura), descritos só no nível da técnica:
+- Fundo texturizado com grão e ilustração de baixo contraste.
 - Título gigante ocupando a largura da tela, parcialmente coberto pelo objeto do produto.
-- Objeto do produto em um canvas fixo que atravessa as seções, trocando de pose a cada uma.
+- Objeto do produto em uma camada `position: fixed` dentro de uma abertura longa (cerca de 8 alturas de tela). Sem `pin`: o hero é só uma seção alta com a camada fixa dentro.
+- As "poses" não são modelos diferentes. São faixas de quadros da mesma sequência pré-renderizada (em pé, tampa para a câmera, tombando), mais escala, rotação e deslocamento em keyframes ligados ao progresso da seção (ver `design-3d`, seção de sequência de quadros).
+- Saída do objeto: ao entrar a seção seguinte, ele reduz até escala 0 e opacidade 0 com leve rotação, e as seções seguintes têm `z-index` maior e cobrem a camada.
+- Mobile usa outra lista de keyframes, não a mesma encolhida.
 - Seção dividida ao meio: texto em um lado, foto em cor chapada no outro.
-- Navegação em pílulas fixas e ações (carrinho) sempre visíveis.
+- Navegação em pílulas fixas e ações (carrinho) sempre visíveis. O cabeçalho troca para modo de contraste (`mix-blend-mode: difference` ou classe) quando certas seções cruzam o meio da tela.
 - Linhas pontilhadas como divisórias.
-- Página longa (cerca de 19 alturas de tela) com poucas cenas fixas e vários textos revelados por `scrub`.
-- Pilha de bibliotecas: GSAP com ScrollTrigger, Lenis e SplitType. Use versões atuais e fixas, não as antigas.
+- Página de cerca de 18 alturas de tela, das quais 8 são só o hero. As demais seções têm de 1 a 2,8 alturas.
+- Troca de cor entre seções por corte seco na borda, sem transição. Cada seção tem cor chapada ou imagem própria, e o movimento vem de parallax, rotação e escala dos cartões e imagens.
+- Revelação de títulos: um `ScrollTrigger` com `scrub: true` por bloco, faixa curta de rolagem (do topo do elemento a 90% da tela até a 50%), palavras de opacidade 0,2 a 1 com `power1.out` e `stagger`.
+- Pilha de bibliotecas: GSAP com ScrollTrigger, Lenis e SplitType, mais Lottie (canvas) para a sequência. O Lenis estava com duração de 1,2 s e `smoothTouch` desligado, aparentemente sem ligação ao ScrollTrigger. Ligue os dois (ver acima) para evitar descompasso. Use versões atuais e fixas, não as antigas.
 
 Use isso como repertório. Não copie código, texto, imagens, fontes nem identidade visual de outro site.
 
