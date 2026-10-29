@@ -171,6 +171,16 @@ Observados em um site de produto com scroll narrativo (análise de rede e estrut
 - Revelação de títulos: um `ScrollTrigger` com `scrub: true` por bloco, faixa curta de rolagem (do topo do elemento a 90% da tela até a 50%), palavras de opacidade 0,2 a 1 com `power1.out` e `stagger`.
 - Pilha de bibliotecas: GSAP com ScrollTrigger, Lenis e SplitType, mais Lottie (canvas) para a sequência. O Lenis estava com duração de 1,2 s e `smoothTouch` desligado, aparentemente sem ligação ao ScrollTrigger. Ligue os dois (ver acima) para evitar descompasso. Use versões atuais e fixas, não as antigas.
 
+Observados em um portfólio de desenvolvedor com GSAP e ScrollTrigger (sem Lenis), só no nível da técnica:
+- Blocos de cor chapada por seção (vermelho, preto, creme), com corte seco entre eles e poucas cores no total.
+- Nome em fonte condensada gigante no início, com dois quadrados sobrepostos com as iniciais e um círculo de destaque.
+- Faixa de rolagem contínua com as tecnologias, com a lista duplicada para o laço.
+- Projetos em cartões que correm na horizontal enquanto o scroll vertical avança, com a dica "continue rolando para ver todos os projetos".
+- Painel de abas por área (full stack, frontend, backend, dados, deploy, UX), trocando o conteúdo no lugar.
+- Navegação flutuante com links de seção e botões redondos de redes sociais.
+- Chamada final em letras gigantes com um único botão.
+- Página curta, de cerca de 4 alturas de tela, com poucos efeitos bem escolhidos.
+
 Use isso como repertório. Não copie código, texto, imagens, fontes nem identidade visual de outro site.
 
 ## Regras
