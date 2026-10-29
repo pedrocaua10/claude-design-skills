@@ -15,6 +15,8 @@ Skills pessoais de design e criação de sites para o Claude Code, distribuídas
 | `design-uiux` | Planeja a experiência (fluxo, wireframe em texto) e audita telas com acessibilidade WCAG 2.2 AA. |
 | `web-performance` | Auditoria de desempenho: Core Web Vitals, imagens, fontes, scroll e orçamento de 3D. |
 | `web-seo-deploy` | Meta tags, Open Graph, dados estruturados, domínio e publicação (GitHub Pages, Vercel, Netlify, Cloudflare Pages). |
+| `web-escrita-humana` | Revisa textos em português (currículo, portfólio, LinkedIn, e-mail) e tira as marcas de texto gerado por IA. |
+| `agentes-orquestracao` | Desenha fluxos de agentes e skills: escolhe o padrão, define o contrato entre etapas e a aprovação humana. |
 
 ## Fluxo sugerido para uma landing page
 
@@ -23,7 +25,10 @@ Skills pessoais de design e criação de sites para o Claude Code, distribuídas
 3. `design-uiux`: estrutura e roteiro da página.
 4. `design-frontend`, com `design-scroll`, `design-3d` e `design-motion`: construção.
 5. `design-uiux` e `web-performance`: revisão.
-6. `web-seo-deploy`: publicação.
+6. `web-escrita-humana`: revisão final dos textos.
+7. `web-seo-deploy`: publicação.
+
+Para montar agentes e automações, use `agentes-orquestracao`.
 
 ## Estrutura
 
@@ -41,7 +46,9 @@ claude-design-skills/
         ├── design-copy/SKILL.md
         ├── design-uiux/SKILL.md
         ├── web-performance/SKILL.md
-        └── web-seo-deploy/SKILL.md
+        ├── web-seo-deploy/SKILL.md
+        ├── web-escrita-humana/SKILL.md
+        └── agentes-orquestracao/SKILL.md
 ```
 
 ## Instalação com APM
@@ -57,10 +64,22 @@ O APM registra a dependência no `apm.yml` do projeto e instala as skills na pas
 ```yaml
 dependencies:
   apm:
-    - pedrocaua10/claude-design-skills#v1.3.0
+    - pedrocaua10/claude-design-skills#v1.4.0
 ```
 
 Se o repositório for privado, o APM precisa de acesso ao GitHub da mesma forma que no repositório de skills do trabalho.
+
+## Skills de terceiros (instalação opcional)
+
+Não ficam copiadas aqui. Instale no projeto que precisar, depois de ler o `SKILL.md` de cada uma.
+
+| Repositório | Instalação | Quando usar |
+|---|---|---|
+| `isdiegoalves/marketingskills` | `apm install isdiegoalves/marketingskills/skills/<nome> --target claude` | Muvve e o site: `paid-ads`, `ad-creative`, `analytics-tracking`, `ab-test-setup`, `copywriting`, `copy-editing`, `page-cro`, `seo-audit`, `schema-markup`, `ai-seo`, `site-architecture`. Elas leem `.agents/product-marketing-context.md`. |
+| `browser-use/video-use` | `apm install browser-use/video-use --target claude` | Vídeo de apresentação do Nodify. Roda scripts, pede `ELEVENLABS_API_KEY` e `ffmpeg`: leia antes. |
+| `isdiegoalves/avoid-ai-writing` | referência da `web-escrita-humana` | Versão em inglês, com modos e perfis de contexto. |
+
+Avaliados e não adicionados: `StarTrail-org/PixelRAG` (precisa da CLI `pixelshot` via pip), `anthropics/claude-quickstarts` e o fork `isdiegoalves/claude-quickstarts` (aplicações de exemplo, não skills), `anthropics/claude-cookbooks` (os padrões de agentes entraram reescritos em `agentes-orquestracao`) e `poloclub/transformer-explainer` (aplicação Svelte, serve só de inspiração visual).
 
 ## Uso
 
@@ -76,4 +95,4 @@ As skills são só texto: não têm scripts, não buscam conteúdo em URL extern
 
 ## Referências
 
-As ideias vêm de práticas públicas de design, acessibilidade (WCAG 2.2) e desempenho (Core Web Vitals), da documentação do GSAP e do Three.js e de skills abertas da comunidade, como o `frontend-design` da Anthropic, as diretrizes de design web da Vercel e o AccessLint. O texto aqui foi escrito do zero para o meu fluxo.
+`web-escrita-humana` parte do `avoid-ai-writing` de Conor Bronsdon (MIT) e `agentes-orquestracao`, do material da Anthropic sobre agentes e do `claude-cookbooks` (MIT). As ideias vêm de práticas públicas de design, acessibilidade (WCAG 2.2) e desempenho (Core Web Vitals), da documentação do GSAP e do Three.js e de skills abertas da comunidade, como o `frontend-design` da Anthropic, as diretrizes de design web da Vercel e o AccessLint. O texto aqui foi escrito do zero para o meu fluxo.
