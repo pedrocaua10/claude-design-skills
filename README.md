@@ -57,7 +57,7 @@ O APM registra a dependência no `apm.yml` do projeto e instala as skills na pas
 ```yaml
 dependencies:
   apm:
-    - pedrocaua10/claude-design-skills#v1.1.0
+    - pedrocaua10/claude-design-skills#v1.2.0
 ```
 
 Se o repositório for privado, o APM precisa de acesso ao GitHub da mesma forma que no repositório de skills do trabalho.
