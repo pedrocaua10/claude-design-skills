@@ -72,7 +72,9 @@ Regras de montagem:
 | Objeto 3D ligado ao scroll | ScrollTrigger ou progresso normalizado alimentando o Three.js (ver `design-3d`) |
 | Troca de tema ou cor por seção | `IntersectionObserver` alterando um atributo em `body` |
 | Rolagem horizontal dentro de seção vertical | ScrollTrigger com `pin` e `x` em `scrub` |
-| Rolagem suave | Só se o projeto pedir, com Lenis, nunca sequestrando teclado e âncoras |
+| Objeto de produto que atravessa as seções | Camada fixa com `pointer-events: none`, pose por seção via ScrollTrigger |
+| Texto grande que se revela ao rolar | SplitType por palavra e ScrollTrigger com `scrub` |
+| Rolagem suave | Só se o projeto pedir, com Lenis integrado ao ScrollTrigger, nunca sequestrando teclado e âncoras |
 
 ## Técnicas
 
@@ -107,6 +109,64 @@ const io = new IntersectionObserver(entries => {
 }, { rootMargin: "-45% 0px -50% 0px" });
 document.querySelectorAll("[data-scene-id]").forEach(s => io.observe(s));
 ```
+
+**Objeto persistente entre cenas**
+
+Um elemento (frasco, dispositivo, logotipo) fica em uma camada fixa acima das seções e muda de posição, rotação e escala conforme a seção ativa. Cada seção tem fundo e tipografia próprios, e o objeto viaja entre elas.
+```js
+const layer = document.querySelector(".object-layer"); // position: fixed; pointer-events: none
+const poses = {
+  hero:    { x: "0vw",   rotation: 0,   scale: 1 },
+  detalhe: { x: "-18vw", rotation: -24, scale: 0.9 },
+  final:   { x: "18vw",  rotation: 12,  scale: 1.05 }
+};
+Object.entries(poses).forEach(([id, pose]) => {
+  ScrollTrigger.create({
+    trigger: `#${id}`, start: "top 60%", end: "bottom 40%",
+    onToggle: self => self.isActive && gsap.to(layer, { ...pose, duration: 1, ease: "power3.out", overwrite: true })
+  });
+});
+```
+O texto das seções continua legível por baixo do objeto. Em telas estreitas, reduza o objeto ou fixe-o em uma posição que não cubra o conteúdo.
+
+**Texto grande que se revela pelo scroll**
+
+Divida o título em palavras e leve cada uma de um contraste reduzido ao pleno, em uma faixa curta de rolagem (cerca de 30 a 40% da altura da tela).
+```js
+const split = new SplitType(".reveal-text", { types: "words" });
+gsap.fromTo(split.words, { opacity: 0.35 }, {
+  opacity: 1, stagger: 0.05,
+  scrollTrigger: { trigger: ".reveal-text", start: "top 80%", end: "top 30%", scrub: true }
+});
+```
+O texto já aparece legível, só mais fraco. Mantenha o `aria-label` no contêiner, porque a divisão em `span` pode atrapalhar leitores de tela.
+
+**Rolagem suave com Lenis integrada ao ScrollTrigger**
+```js
+const lenis = new Lenis();
+lenis.on("scroll", ScrollTrigger.update);
+gsap.ticker.add(time => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+```
+Desligue com `prefers-reduced-motion`, preserve as âncoras (`lenis.scrollTo`) e o uso do teclado.
+
+**Fundos chapados por seção**
+
+Cada seção tem uma cor de fundo forte e própria (token por seção), e a troca acontece pela posição de rolagem, sem fade longo. Textura de grão ou ilustração de baixo contraste dá profundidade sem competir com o texto.
+
+## Padrões de referência
+
+Observados em um site de produto com scroll narrativo, descritos só no nível da técnica:
+- Fundo texturizado com grão e ilustração botânica de baixo contraste.
+- Título gigante ocupando a largura da tela, parcialmente coberto pelo objeto do produto.
+- Objeto do produto em um canvas fixo que atravessa as seções, trocando de pose a cada uma.
+- Seção dividida ao meio: texto em um lado, foto em cor chapada no outro.
+- Navegação em pílulas fixas e ações (carrinho) sempre visíveis.
+- Linhas pontilhadas como divisórias.
+- Página longa (cerca de 19 alturas de tela) com poucas cenas fixas e vários textos revelados por `scrub`.
+- Pilha de bibliotecas: GSAP com ScrollTrigger, Lenis e SplitType. Use versões atuais e fixas, não as antigas.
+
+Use isso como repertório. Não copie código, texto, imagens, fontes nem identidade visual de outro site.
 
 ## Regras
 
