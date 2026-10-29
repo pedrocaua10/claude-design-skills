@@ -1,0 +1,8 @@
+name: claude-design-skills
+version: 1.0.0
+description: Skills de design front-end e UI/UX para o Claude Code
+author: Pedro Cauã
+type: skill
+targets:
+  - claude
+includes: auto
