@@ -181,6 +181,20 @@ Observados em um portfólio de desenvolvedor com GSAP e ScrollTrigger (sem Lenis
 - Chamada final em letras gigantes com um único botão.
 - Página curta, de cerca de 4 alturas de tela, com poucos efeitos bem escolhidos.
 
+Parâmetros medidos nesse portfólio, para adaptar com identidade própria:
+- Trilho horizontal: trigger no contêiner de 100vh, `start: "top top"`, `pin: true`, `scrub: true`, `ease: "none"`, `invalidateOnRefresh: true`. A distância é `trilho.scrollWidth - window.innerWidth + 80`, usada em funções para `end` e `x`, o que refaz o cálculo depois de `ScrollTrigger.refresh()`. Cartão com `clamp(300px, 62vw, 520px)` e espaço de 34px.
+- Faixa de tecnologias só em CSS: `width: max-content`, `translateX(0)` a `translateX(-50%)` em 26s linear, conjunto duplicado no HTML (cerca de 56 px/s), levemente inclinada e sobrepondo a base do hero.
+- Nome por letra: cada letra em um `span` dentro de linha com `overflow: hidden`, estado inicial `translateY(115%) rotate(6deg)`, 0,7s com `cubic-bezier(.2,1,.3,1)` e atraso de 0,045s por letra e 0,35s por linha.
+- Objetos decorativos flutuando em CSS (0 a -14px, 5s e 6,5s em sentidos opostos), sem parallax.
+- Abas: troca de classe com animação de 0,45s (opacidade e 10px de deslocamento).
+
+Falhas a evitar, vistas nesse mesmo portfólio:
+- Com `prefers-reduced-motion` no desktop, o pin some e o trilho vira `overflow: hidden`, deixando cartões inalcançáveis. O fallback de rolagem nativa com `scroll-snap` precisa valer também para movimento reduzido, não só para celular.
+- Cabeçalho transparente sem troca de cor por seção fica ilegível sobre fundo claro.
+- Abas sem `role="tab"`, `aria-selected` e navegação por setas.
+- Imagens de 0,5 a 1 MB em PNG e JPEG, sem `width`, `height` nem `loading="lazy"`, somando 97% do peso da página.
+- Menu móvel que não fecha por clique fora, Esc nem usa `aria-expanded`.
+
 Use isso como repertório. Não copie código, texto, imagens, fontes nem identidade visual de outro site.
 
 ## Regras
