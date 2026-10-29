@@ -27,7 +27,7 @@ Use quando o objeto é o centro da história e o público aceita o custo. Evite 
 - o objeto só decora e não explica nada;
 - não há modelo de qualidade nem tempo para ajustar luz e materiais.
 
-Alternativas leves: SVG animado, canvas 2D, vídeo curto em loop, CSS 3D com `transform`.
+Alternativas leves: SVG animado, canvas 2D, vídeo curto em loop, CSS 3D com `transform` e sequência de quadros pré-renderizados (seção abaixo).
 
 ## Fluxo de entrega
 
@@ -99,6 +99,31 @@ renderer.setAnimationLoop(() => {
 - **Materiais:** `MeshStandardMaterial` resolve a maioria. `MeshPhysicalMaterial` com transmissão simula vidro, mas custa caro. Use só em objetos pequenos e teste em celular.
 - **Partículas:** use `Points` ou `InstancedMesh`. Milhares são aceitáveis; centenas de milhares exigem teste.
 - **Reflexo e vapor:** simule com mapa de ambiente e sprites translúcidos antes de pensar em efeitos pesados.
+
+## Alternativa fotorrealista: sequência de quadros
+
+Em vez de renderizar em tempo real, renderize o objeto uma vez (em Blender ou outra ferramenta), exporte de 60 a 120 quadros em WebP ou AVIF e desenhe o quadro certo em um canvas 2D conforme o progresso do scroll. O resultado parece fotografia e roda em qualquer dispositivo.
+```js
+const total = 90;
+const frames = Array.from({ length: total }, (_, i) => {
+  const img = new Image();
+  img.src = `frames/objeto-${String(i).padStart(3, "0")}.webp`;
+  return img;
+});
+const ctx = canvas.getContext("2d");
+ScrollTrigger.create({
+  trigger: ".story", start: "top top", end: "bottom bottom",
+  onUpdate: s => {
+    const i = Math.min(total - 1, Math.round(s.progress * (total - 1)));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(frames[i], 0, 0, canvas.width, canvas.height);
+  }
+});
+```
+- Mostre o primeiro quadro como imagem comum enquanto os demais carregam.
+- O peso cresce com a quantidade de quadros e a resolução. Meça o total e defina um orçamento.
+- A rotação fica fixa em um eixo. Para vários ângulos, use WebGL.
+- Use ativos próprios. Registre a origem e a licença de cada quadro.
 
 ## Desempenho e fallback
 
